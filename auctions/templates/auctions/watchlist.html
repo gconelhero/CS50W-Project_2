@@ -1,0 +1,51 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>{{ title_h2 }}</h2>
+    {% if not watchlist %}
+    <div class="not-watching">
+        <h1>zZzzZzZ... </h1>
+        <h2>Watching Nothing!</h2><br><br>
+        <a href="{% url 'index' %}">
+            <h3>Look for something?!?</h3>
+        </a>
+    </div>
+    {% endif %}
+    <div class="listing row">
+        {% for listing in watchlist %}
+        <div class="listing card"> 
+            <a class="listing" href="{% url 'view_listing' listing.item_auction.pk %}">
+                <div class="listing card-body">
+                    <div class="card-header-title">
+                        <span class="card-title">{{ listing.item_auction.item_name }}</span>
+                    </div>
+                <div class="listing-img-content">
+                    {% if listing.item_auction.image_url %}
+                    <img class="lisitng" src="{{ listing.item_auction.image_url}}">
+                    {% else %}
+                    <img class="listing" src="/media/{{ listing.item_auction.image}}">
+                    {% endif %}
+                </div>
+                
+                    <div class="listing card-text">
+                        <ul class="listing-icons">
+                            <li><i class="" aria-hidden="true">Initial Price:</i> {{ listing.item_auction.initial_price }}</li>
+                            <li><i class="" aria-hidden="true">Current Price:</i> {% if lisitng.current_price %}{{ listing.item_auction.current_price }} {% endif %}</li>
+                            <li class="description"><i class="" aria-hidden="true">Description:</i> {{ listing.item_auction.description }}</li>
+                            <li><i class="" aria-hidden="true">Ends in:</i><br> {{ listing.item_auction.date_end }}</li>
+                        </ul>
+                    </div>
+                    <p class="created">Created  {{ listing.item_auction.date_created }}</p>
+                </div>
+            </a>
+            <div style="bottom: 0px;" class="button-div">
+                <a href="{% url 'remove_watchlist' listing.item_auction.pk %}">
+                    <input class="listing-view btn btn-primary" type="button" value="Remove to Watchlist">
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+{% endblock %}

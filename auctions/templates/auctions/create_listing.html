@@ -1,0 +1,40 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h2>{{ title_h2 }}</h2>
+{% if message %}
+<div class="alert alert-danger" role="alert">
+    {{ message }}
+</div>
+{% endif %}
+<div class="form-container">
+    <form method="post" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.item_name.label }}:
+        {{ form.item_name }}
+        {{ form.category.label }}:
+        {{ form.category }}
+        {{ form.description.label }}:
+        {{ form.description }}
+        {{ form.initial_price.label }}:
+        {{ form.initial_price }}
+        {{ form.date_end.label }}:
+        {{ form.date_end }}
+        <br>
+        <label>Choose between Image by URL or File:</label><br>
+        <div class="button-div-create-listing">
+            <input onclick="imageUrl()" class="lisitng-view image-btn btn btn-secondary" value="Image URL" type="button"> 
+            {{form.error}}
+        </div>
+        <p></p>
+        {{ form.image }} {{ form.image_url }}
+        <div class="button-div">
+            <input value="Submit" type="submit" class="submit-create-listing btn btn-primary">
+        </div>
+    </form>
+</div>
+
+{% endblock %}

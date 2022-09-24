@@ -1,0 +1,102 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>{{ title_h2 }}</h2>
+    {% if request.user.is_authenticated and request.user == listing.buyer and listing.active == 0 %}
+    <div class="not-watching">
+        <h1>Congratulations!!! </h1>
+        <h2>You are the winner of this listing!</h2><br><br>
+    </div>
+    {% endif  %}
+    <div class="listing row">
+        <div class="card">
+            <div class="listing card-body">
+                <span class="card-title">{{ listing.item_name }}</span>
+            <div class="listing-view-img-content">
+                {% if listing.image_url %}
+                <img class="listing-view" src="{{ listing.image_url}}" >
+                {% else %}
+                <img src="/media/{{ listing.image }}" >
+                {% endif %}
+            </div>
+                <div class="listing card-text">
+                    <ul class="listing-icons">
+                        <li><i class="" aria-hidden="true">Initial Price:</i> {{ listing.initial_price }}</li>
+                        <li><i class="" aria-hidden="true">Current Price:</i> {% if listing.current_price %}{{ listing.current_price }} {% endif %}</li>
+                        <li class="description"><i class="" aria-hidden="true">Description:</i> {{ listing.description }}</li>
+                        <li><i class="" aria-hidden="true">Created in:</i><br> {{ listing.date_created }}</li>
+                        {% if listing.active %}
+                            <li><i class="" aria-hidden="true">Ends in:</i><br> {{ listing.date_end }}</li>
+                        {% else %}
+                            <li><i class="" aria-hidden="true">Closed in:</i><br> {{ listing.date_end }}</li>
+                        {% endif %}
+                        <br>
+                        {% if request.user.is_authenticated %}
+                            <li><i class="" aria-hidden="true">Owner:</i><br> {{ listing.user }}</li>
+                        {% endif %}
+                        {% if not listing.active %}
+                            <br>
+                            <li><i class="" aria-hidden="true">Listing Winner:</i><br> {% if listing.buyer %}{{ listing.buyer }}{% endif %}</li>
+                        {% endif %}
+                        
+                    </ul>
+                    
+                </div>
+            </div>
+            {% if request.user.is_authenticated %}
+            {% if message %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+            {% endif %}
+            
+            <div class="button-div">
+                {% if listing.active %}
+                <a href="{% url 'add_watchlist' listing.pk %}">
+                    <input class="listing-view bid-btn btn btn-primary" type="button" value="{{ btn_text }}">
+                </a>
+                {% endif %}
+                {% if listing.active %}
+                <form class="listing-view" method="post">
+                    {% csrf_token %}
+                    {% for f in form %}
+                    <input id="place-bid-btn" onclick="placeBid()" class="listing-view btn btn-success" type="button" value="{{ bid_btn_text }}">{{ f }}{% endfor %}
+                </form>
+                {% endif %}
+                {% if request.user == listing.user %}
+                {% if listing.active %}
+                <a href="{% url 'close_auction' listing.pk %}">
+                    <input id="close-auction" class="listing-view btn btn-warning" type="button" value="Close Auction">
+                </a>
+                {% endif %}
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        
+    </div>
+    <div class="comment-container">
+        {% if request.user.is_authenticated %}
+        <form class="comment-form" method="post">
+            {% csrf_token %}
+            {{ form_comment.content.label }}
+            {{ form_comment.content }}
+        </form>
+        {% endif %}
+        <div class="comment-list">
+            {% for comment in comments %}
+            <div class="comment">
+                <p class="comment-content">{{ comment.content }}<br>
+                    <span class="comment-detail">{{ comment.user }}</span>
+                    <span class="comment-detail">{{ comment.date_created }}</span>
+                </p>
+                <hr class="comment-division">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+        
+
+    
+{% endblock %}

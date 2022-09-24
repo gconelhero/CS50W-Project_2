@@ -1,0 +1,39 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>{{ title_h2 }} {% if category %}({{ category }}){% endif %}</h2>
+
+    <div class="listing row">
+        {% for listing in listings %}
+        <div class="listing card"> 
+            <a class="listing" href="{% url 'view_listing' listing.pk %}">
+                <div class="listing card-body">
+                    <div class="card-header-title">
+                        <span class="card-title">{{ listing.item_name }}</span>{% if listing in watchlist %}</i><i class="watchlist-icon far fa-eye" title="Watchlist"></i> {% endif %}
+                    </div>
+                <div class="listing-img-content">
+                    {% if listing.active == 0 %}<i class="finalized-icon">Finalized</i>{% endif %}
+                    {% if listing.image_url %}
+                    <img class="lisitng" src="{{ listing.image_url}}" >
+                    {% else %}
+                    <img class="listing" src="/media/{{ listing.image }}" >
+                    {% endif %}
+                </div>
+                    <div class="listing card-text">
+                        <ul class="listing-icons">
+                            <li><i class="" aria-hidden="true">Initial Price:</i> {{ listing.initial_price }}</li>
+                            <li><i class="" aria-hidden="true">Current Price:</i> {% if listing.current_price %}{{ listing.current_price }} {% endif %}</li>
+                            <li class="description"><i class="" aria-hidden="true">Description:</i> {{ listing.description }}</li>
+                            <li><i class="" aria-hidden="true">Ends in:</i><br> {{ listing.date_end }}</li>
+                        </ul>
+                        
+                    </div>
+                </div>
+                <p class="created">Created  {{ listing.date_created }}</p>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
