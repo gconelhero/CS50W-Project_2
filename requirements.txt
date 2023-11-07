@@ -1,0 +1,4 @@
+Django==4.0.2
+Pillow==9.0.0
+filetype==1.0.9
+django-money==2.1.1
