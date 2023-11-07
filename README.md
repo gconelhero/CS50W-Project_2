@@ -16,7 +16,6 @@ Users who are signed in should be able to add comments to the listing page. The 
 
 Setup with Python 3.8.10:
 ```
-python3 -m pip install Django==4.2.5 &&
 git clone https://github.com/gconelhero/CS50W-Project_2 &&
 cd CS50W-Project_2 &&
 python3 -m pip install -r requirements.txt &&
