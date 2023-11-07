@@ -19,6 +19,7 @@ Setup with Python 3.8.10:
 python3 -m pip install Django==4.2.5
 git clone https://github.com/gconelhero/CS50W-Project_2
 cd CS50W-Project_2
+python3 -m pip install -r requirements.txt
 python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py runserver
